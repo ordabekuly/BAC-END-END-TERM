@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% block title %}Add Game{% endblock %}
+
+{% block content %}
+    <div class="container py-4">
+        <h1 class="mb-4 text-info">🎯 Add New Game</h1>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <form method="POST" action="" enctype="multipart/form-data" class="bg-black p-4 rounded shadow-lg border border-secondary">
+            {{ form.hidden_tag() }}
+
+            <div class="mb-3">
+                {{ form.title.label(class="form-label text-light") }}
+                {{ form.title(class="form-control bg-dark text-light border-secondary") }}
+                {% for error in form.title.errors %}
+                    <span class="text-danger">{{ error }}</span>
+                {% endfor %}
+            </div>
+
+            <div class="mb-3">
+                {{ form.description.label(class="form-label text-light") }}
+                {{ form.description(class="form-control bg-dark text-light border-secondary", rows=5) }}
+                {% for error in form.description.errors %}
+                    <span class="text-danger">{{ error }}</span>
+                {% endfor %}
+            </div>
+
+            <div class="mb-3">
+                {{ form.price.label(class="form-label text-light") }}
+                {{ form.price(class="form-control bg-dark text-light border-secondary") }}
+                {% for error in form.price.errors %}
+                    <span class="text-danger">{{ error }}</span>
+                {% endfor %}
+            </div>
+
+            <div class="mb-3">
+                {{ form.image.label(class="form-label text-light") }}
+                {{ form.image(class="form-control bg-dark text-light border-secondary") }}
+                {% for error in form.image.errors %}
+                    <span class="text-danger">{{ error }}</span>
+                {% endfor %}
+            </div>
+
+            <div class="d-flex justify-content-between mt-4">
+                {{ form.submit(class="btn btn-success") }}
+                <a href="{{ url_for('developer.dashboard') }}" class="btn btn-outline-secondary">Back</a>
+            </div>
+        </form>
+    </div>
+{% endblock %}

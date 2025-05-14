@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% block title %}Edit Game{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <h1 class="mb-4 fw-bold">🛠️ Edit Game</h1>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }} shadow-sm">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <form method="POST" action="" enctype="multipart/form-data" class="border rounded p-4 shadow-sm bg-light">
+        {{ form.hidden_tag() }}
+
+        <div class="mb-3">
+            {{ form.title.label(class="form-label fw-semibold") }}
+            {{ form.title(class="form-control") }}
+            {% for error in form.title.errors %}
+                <div class="text-danger small">{{ error }}</div>
+            {% endfor %}
+        </div>
+
+        <div class="mb-3">
+            {{ form.description.label(class="form-label fw-semibold") }}
+            {{ form.description(class="form-control", rows=5) }}
+            {% for error in form.description.errors %}
+                <div class="text-danger small">{{ error }}</div>
+            {% endfor %}
+        </div>
+
+        <div class="mb-3">
+            {{ form.price.label(class="form-label fw-semibold") }}
+            {{ form.price(class="form-control") }}
+            {% for error in form.price.errors %}
+                <div class="text-danger small">{{ error }}</div>
+            {% endfor %}
+        </div>
+
+        <div class="mb-3">
+            {{ form.image.label(class="form-label fw-semibold") }}
+            {{ form.image(class="form-control") }}
+            {% if game.image_path %}
+                <div class="mt-2">
+                    <strong>Current Image:</strong><br>
+                    <a href="{{ url_for('static', filename=game.image_path) }}" target="_blank">
+                        <img src="{{ url_for('static', filename=game.image_path) }}" alt="Current Image" class="img-thumbnail" style="max-height: 150px;">
+                    </a>
+                </div>
+            {% endif %}
+            {% for error in form.image.errors %}
+                <div class="text-danger small">{{ error }}</div>
+            {% endfor %}
+        </div>
+
+        <div class="d-flex gap-2">
+            {{ form.submit(class="btn btn-success") }}
+            <a href="{{ url_for('developer.view_games') }}" class="btn btn-secondary">⬅️ Back</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

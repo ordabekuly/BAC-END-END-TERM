@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block title %}Manage Users{% endblock %}
+{% block content %}
+    <h1>Manage Users</h1>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Username</th>
+                <th>Email</th>
+                <th>Role</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in users %}
+                <tr>
+                    <td>{{ user.id }}</td>
+                    <td>{{ user.username }}</td>
+                    <td>{{ user.email }}</td>
+                    <td>
+                        {% if user.is_admin %}
+                            Admin
+                        {% elif user.is_developer %}
+                            Developer
+                        {% else %}
+                            User
+                        {% endif %}
+                    </td>
+                    <td>
+                        <form method="POST" action="{{ url_for('admin.manage_users') }}">
+                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                            <input type="hidden" name="user_id" value="{{ user.id }}">
+                            <select name="role" class="form-select form-select-sm d-inline-block w-auto">
+                                <option value="user" {% if not user.is_admin and not user.is_developer %}selected{% endif %}>User</option>
+                                <option value="admin" {% if user.is_admin %}selected{% endif %}>Admin</option>
+                                <option value="developer" {% if user.is_developer %}selected{% endif %}>Developer</option>
+                            </select>
+                            <button type="submit" name="action" value="update_role" class="btn btn-primary btn-sm">Save</button>
+                            <button type="submit" name="action" value="delete" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this user?')">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <a href="{{ url_for('admin.dashboard') }}" class="btn btn-secondary">Back to Dashboard</a>
+{% endblock %}

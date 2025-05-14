@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %}Profile{% endblock %}
+
+{% block content %}
+<div class="container d-flex justify-content-center align-items-center min-vh-100">
+    <div class="card bg-dark text-light shadow-lg p-4 border-0" style="max-width: 400px; width: 100%;">
+        <div class="card-body text-center">
+            <h1 class="mb-4 text-info fw-bold">Profile</h1>
+
+            <h4 class="card-title mb-3">{{ user.username }}</h4>
+            <p class="card-text"><strong>📧 Email:</strong> {{ user.email }}</p>
+            <p class="card-text"><strong>👤 Role:</strong>
+                {% if user.is_admin %}
+                    <span class="badge bg-danger">Admin</span>
+                {% elif user.is_developer %}
+                    <span class="badge bg-primary">Developer</span>
+                {% else %}
+                    <span class="badge bg-secondary">User</span>
+                {% endif %}
+            </p>
+
+            <div class="d-flex justify-content-center gap-2 mt-4">
+                <a href="{{ url_for('main.index') }}" class="btn btn-outline-secondary">⬅️ Home</a>
+                <a href="{{ url_for('auth.logout') }}" class="btn btn-outline-danger">Logout</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
