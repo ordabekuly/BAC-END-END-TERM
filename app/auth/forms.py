@@ -1,4 +1,4 @@
-# app\admin\forms.py
+# app\auth\forms.py
 
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileAllowed

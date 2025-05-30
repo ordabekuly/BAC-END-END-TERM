@@ -2,14 +2,65 @@
 {% block title %}Profile{% endblock %}
 
 {% block content %}
+<style>
+    body {
+        background: linear-gradient(45deg, #0e0e24, #1a1a33, #242442);
+        min-height: 100vh;
+        color: #b0b0b0;
+    }
+
+    .profile-card {
+        background: #1a1a2e;
+        border-radius: 15px;
+        box-shadow: 0 0 20px rgba(0, 255, 255, 0.1);
+    }
+
+    .btn-glow {
+        border: 2px solid #00c0dd;
+        color: #00c0dd;
+        background: transparent;
+    }
+
+    .btn-danger {
+        border-color: #cc4444;
+        color: #cc4444;
+    }
+
+    .badge {
+        font-size: 0.85rem;
+        padding: 0.4em 1em;
+        border-radius: 20px;
+    }
+
+    .bg-danger {
+        background-color: #882222 !important;
+    }
+
+    .bg-primary {
+        background-color: #223388 !important;
+    }
+
+    .bg-secondary {
+        background-color: #444444 !important;
+    }
+
+    h1, h4 {
+        font-family: 'Orbitron', sans-serif;
+        text-shadow: 0 0 8px rgba(0, 192, 221, 0.4);
+    }
+</style>
+
 <div class="container d-flex justify-content-center align-items-center min-vh-100">
-    <div class="card bg-dark text-light shadow-lg p-4 border-0" style="max-width: 400px; width: 100%;">
+    <div class="card profile-card text-light p-4 border-0" style="max-width: 400px; width: 100%;">
         <div class="card-body text-center">
             <h1 class="mb-4 text-info fw-bold">Profile</h1>
-
             <h4 class="card-title mb-3">{{ user.username }}</h4>
-            <p class="card-text"><strong>📧 Email:</strong> {{ user.email }}</p>
-            <p class="card-text"><strong>👤 Role:</strong>
+
+            <p class="card-text">
+                <strong>📧 Email:</strong> {{ user.email }}
+            </p>
+            <p class="card-text">
+                <strong>👤 Role:</strong>
                 {% if user.is_admin %}
                     <span class="badge bg-danger">Admin</span>
                 {% elif user.is_developer %}
@@ -20,10 +71,12 @@
             </p>
 
             <div class="d-flex justify-content-center gap-2 mt-4">
-                <a href="{{ url_for('main.index') }}" class="btn btn-outline-secondary">⬅️ Home</a>
-                <a href="{{ url_for('auth.logout') }}" class="btn btn-outline-danger">Logout</a>
+                <a href="{{ url_for('main.index') }}" class="btn btn-glow">⬅️ Home</a>
+                <a href="{{ url_for('auth.logout') }}" class="btn btn-glow btn-danger">Logout</a>
             </div>
         </div>
     </div>
 </div>
+
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
 {% endblock %}

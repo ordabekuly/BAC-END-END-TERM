@@ -2,36 +2,92 @@
 {% block title %}Developer Dashboard{% endblock %}
 
 {% block content %}
-<div class="container py-4">
-    <div class="bg-dark text-white p-4 rounded shadow-sm mb-4">
-        <h1 class="mb-2">🎮 Welcome, {{ current_user.username }}!</h1>
+<style>
+    body {
+        background: #1a1a3d;
+        min-height: 100vh;
+    }
+
+    .dashboard-container {
+        background: #2c2c54;
+        border-radius: 15px;
+        box-shadow: 0 0 20px rgba(0, 255, 255, 0.2);
+    }
+
+    .dashboard-container:hover {
+        box-shadow: 0 0 30px rgba(0, 255, 255, 0.5);
+    }
+
+    .btn-glow {
+        position: relative;
+        overflow: hidden;
+        transition: all 0.3s ease;
+        border: 2px solid #00f0ff;
+        color: #00f0ff;
+        background: transparent;
+    }
+
+    .btn-glow:hover {
+        background: #00f0ff;
+        color: #1a1a3d;
+        box-shadow: 0 0 15px rgba(0, 240, 255, 0.7);
+        transform: scale(1.05);
+    }
+
+    .btn-glow::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+        transition: 0.5s;
+    }
+
+    .btn-glow:hover::before {
+        left: 100%;
+    }
+
+    .btn-success {
+        border-color: #00cc00;
+        color: #00cc00;
+    }
+
+    .btn-success:hover {
+        background: #00cc00;
+        color: #1a1a3d;
+        box-shadow: 0 0 15px rgba(0, 204, 0, 0.7);
+    }
+
+    h1, p {
+        font-family: 'Orbitron', sans-serif;
+        text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+    }
+
+    p.text-muted {
+        color: #ccc !important;
+    }
+</style>
+
+<div class="container py-4 dashboard-container text-light">
+    <div class="p-4 rounded shadow-sm mb-4">
+        <h1 class="mb-2 text-info">🎮 Welcome, {{ current_user.username }}!</h1>
         <p class="text-muted">Manage your games and developer tools in one place.</p>
     </div>
 
-    {% with messages = get_flashed_messages(with_categories=true) %}
-        {% if messages %}
-            {% for category, message in messages %}
-                <div class="alert alert-{{ category }} shadow-sm">{{ message }}</div>
-            {% endfor %}
-        {% endif %}
-    {% endwith %}
-
     <div class="row g-3">
         <div class="col-md-4">
-            <a href="{{ url_for('developer.add_game') }}" class="btn btn-success w-100 py-3 shadow-sm">
-                ➕ Add New Game
-            </a>
+            <a href="{{ url_for('developer.add_game') }}" class="btn btn-glow btn-success w-100 py-3 shadow-sm">➕ Add New Game</a>
         </div>
         <div class="col-md-4">
-            <a href="{{ url_for('developer.view_games') }}" class="btn btn-primary w-100 py-3 shadow-sm">
-                📁 View My Games
-            </a>
+            <a href="{{ url_for('developer.view_games') }}" class="btn btn-glow w-100 py-3 shadow-sm">📁 View My Games</a>
         </div>
         <div class="col-md-4">
-            <a href="{{ url_for('main.index') }}" class="btn btn-secondary w-100 py-3 shadow-sm">
-                ⬅️ Back to Store
-            </a>
+            <a href="{{ url_for('main.index') }}" class="btn btn-glow w-100 py-3 shadow-sm">⬅️ Back to Store</a>
         </div>
     </div>
 </div>
+
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
 {% endblock %}

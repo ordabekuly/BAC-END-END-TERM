@@ -2,25 +2,55 @@
 {% block title %}My Library{% endblock %}
 
 {% block content %}
-<div class="container py-4 bg-dark text-light rounded">
-    <h1 class="display-5 text-center text-info fw-bold mb-4">🎮 My Library, {{ current_user.username }}!</h1>
+<style>
+    body {
+        background: linear-gradient(45deg, #1a1a3d, #2a1a5e, #3a1a7d);
+        min-height: 100vh;
+    }
 
-    {% with messages = get_flashed_messages(with_categories=true) %}
-        {% if messages %}
-            {% for category, message in messages %}
-                <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
-                    {{ message }}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-            {% endfor %}
-        {% endif %}
-    {% endwith %}
+    .library-container {
+        background: #2c2c54;
+        border-radius: 15px;
+        box-shadow: 0 0 20px rgba(0, 255, 255, 0.2);
+    }
+
+    .card {
+        background: #1a1a3d;
+        border: 2px solid #00f0ff;
+    }
+
+    .card-img-top {
+        border-radius: 10px 10px 0 0;
+    }
+
+    .btn-glow {
+        border: 2px solid #00f0ff;
+        color: #00f0ff;
+        background: transparent;
+    }
+
+    h1 {
+        font-family: 'Orbitron', sans-serif;
+        text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+    }
+
+    .card-title, .card-text {
+        color: #fff;
+    }
+
+    .card-title {
+        font-family: 'Orbitron', sans-serif;
+    }
+</style>
+
+<div class="container py-4 library-container text-light rounded">
+    <h1 class="display-5 text-center text-info fw-bold mb-4">🎮 My Library, {{ current_user.username }}!</h1>
 
     {% if games %}
         <div class="row row-cols-1 row-cols-md-3 g-4">
             {% for game in games %}
                 <div class="col">
-                    <div class="card h-100 bg-secondary text-light border-0 shadow-sm">
+                    <div class="card h-100 text-light border-0 shadow-sm">
                         {% if game.image_path %}
                             <img src="{{ url_for('static', filename=game.image_path) }}" class="card-img-top" alt="{{ game.title }}">
                         {% else %}
@@ -36,11 +66,15 @@
             {% endfor %}
         </div>
     {% else %}
-        <p class="text-center text-muted mt-5">No games purchased yet. Go explore the store!</p>
+        <p class="text-center text-muted mt-5">
+            No games purchased yet. Go explore the store!
+        </p>
     {% endif %}
 
     <div class="mt-4 text-center">
-        <a href="{{ url_for('main.index') }}" class="btn btn-outline-info btn-lg">⬅️ Back to Home</a>
+        <a href="{{ url_for('main.index') }}" class="btn btn-glow btn-lg">⬅️ Back to Home</a>
     </div>
 </div>
+
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
 {% endblock %}

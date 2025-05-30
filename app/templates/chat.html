@@ -1,0 +1,184 @@
+{% extends "base.html" %}
+{% block title %}ChatBot{% endblock %}
+
+{% block content %}
+<style>
+    body {
+        background: linear-gradient(45deg, #1a1a3d, #2a1a5e, #3a1a7d);
+        background-size: 200% 200%;
+
+        min-height: 100vh;
+    }
+
+    .chat-container {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+        background: #2c2c54;
+        border-radius: 15px;
+        box-shadow: 0 0 20px rgba(0, 255, 255, 0.2);
+
+        min-height: 80vh;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .chat-container:hover {
+        box-shadow: 0 0 30px rgba(0, 255, 255, 0.5);
+    }
+
+    .chat-box {
+        flex: 1;
+        background: #1a1a3d;
+        border: 2px solid #00f0ff;
+        border-radius: 10px;
+        padding: 20px;
+        overflow-y: auto;
+        margin-bottom: 20px;
+        max-height: 60vh;
+    }
+
+    .chat-message {
+        margin-bottom: 15px;
+        padding: 10px;
+        border-radius: 10px;
+        word-wrap: break-word;
+        box-shadow: 0 2px 5px rgba(0, 255, 255, 0.2);
+        transition: transform 0.3s ease;
+    }
+
+    .chat-message:hover {
+        transform: scale(1.02);
+    }
+
+    .user-message {
+        width: 30%;
+        background: #00f0ff;
+        color: #1a1a3d;
+        margin-left: auto;
+        text-align: left;
+    }
+
+    .bot-message {
+        width: 70%;
+        background: #444;
+        color: #fff;
+        margin-right: auto;
+        text-align: left;
+    }
+
+    .chat-input {
+        display: flex;
+        gap: 10px;
+    }
+
+    .chat-input input {
+        background: #1a1a3d !important;
+        color: #fff !important;
+        border: 2px solid #00f0ff !important;
+        border-radius: 5px;
+        transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .chat-input input:focus {
+        border-color: #00f0ff !important;
+        box-shadow: 0 0 10px rgba(0, 255, 255, 0.5) !important;
+    }
+
+    .btn-glow {
+        position: relative;
+        overflow: hidden;
+        transition: all 0.3s ease;
+        border: 2px solid #00f0ff;
+        color: #00f0ff;
+        background: transparent;
+        border-radius: 5px;
+    }
+
+    .btn-glow:hover {
+        background: #00f0ff;
+        color: #1a1a3d;
+        box-shadow: 0 0 15px rgba(0, 240, 255, 0.7);
+        transform: scale(1.05);
+    }
+
+    .btn-glow::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+        transition: 0.5s;
+    }
+
+    .btn-glow:hover::before {
+        left: 100%;
+    }
+
+    h1 {
+        font-family: 'Orbitron', sans-serif;
+        text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+    }
+</style>
+
+<div class="container chat-container">
+    <h1 class="text-center text-info mb-4">Game Store ChatBot</h1>
+    <div class="chat-box" id="chat-box">
+    </div>
+    <div class="chat-input" >
+        <input type="text" id="chatbot-input" class="form-control" placeholder="Write your question" onkeypress="if(event.key === 'Enter') sendMessage()">
+        <button onclick="sendMessage()" class="btn btn-glow">Enter</button>
+    </div>
+</div>
+
+<script>
+    function sendMessage() {
+        const input = document.getElementById('chatbot-input').value;
+        if (!input) {
+            alert('Enter the message');
+            return;
+        }
+
+        const chatBox = document.getElementById('chat-box');
+        const userMessage = document.createElement('div');
+        userMessage.className = 'chat-message user-message';
+        userMessage.innerHTML = `<span>${input}</span><br><small style="color: #ccc;">${new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</small>`;
+        chatBox.appendChild(userMessage);
+
+        document.getElementById('chatbot-input').value = '';
+
+        fetch('/chatbot', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: `message=${encodeURIComponent(input)}`
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`Сервер қатесі: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            const botMessage = document.createElement('div');
+            botMessage.className = 'chat-message bot-message';
+            botMessage.innerHTML = `<span>${data.response}</span><br><small style="color: #ccc;">${new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</small>`;
+            chatBox.appendChild(botMessage);
+
+            chatBox.scrollTop = chatBox.scrollHeight;
+        })
+        .catch(error => {
+            const errorMessage = document.createElement('div');
+            errorMessage.className = 'chat-message bot-message';
+            errorMessage.style.backgroundColor = '#ff4444';
+            errorMessage.textContent = `Қате: ${error.message}`;
+            chatBox.appendChild(errorMessage);
+
+            chatBox.scrollTop = chatBox.scrollHeight;
+        });
+    }
+</script>
+
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+{% endblock %}

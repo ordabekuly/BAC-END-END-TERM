@@ -2,59 +2,119 @@
 {% block title %}Add Game{% endblock %}
 
 {% block content %}
-    <div class="container py-4">
-        <h1 class="mb-4 text-info">🎯 Add New Game</h1>
+<style>
+    .add-form {
+        background: #2c2c54;
+        border-radius: 15px;
+        box-shadow: 0 0 20px rgba(0, 255, 255, 0.2);
+    }
 
-        {% with messages = get_flashed_messages(with_categories=true) %}
-            {% if messages %}
-                {% for category, message in messages %}
-                    <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
-                        {{ message }}
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>
-                {% endfor %}
-            {% endif %}
-        {% endwith %}
+    .add-form:hover {
+        box-shadow: 0 0 30px rgba(0, 255, 255, 0.5);
+    }
 
-        <form method="POST" action="" enctype="multipart/form-data" class="bg-black p-4 rounded shadow-lg border border-secondary">
-            {{ form.hidden_tag() }}
+    .form-control {
+        background: #1a1a3d !important;
+        border: 2px solid #00f0ff !important;
+        color: #fff !important;
+        transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
 
-            <div class="mb-3">
-                {{ form.title.label(class="form-label text-light") }}
-                {{ form.title(class="form-control bg-dark text-light border-secondary") }}
-                {% for error in form.title.errors %}
-                    <span class="text-danger">{{ error }}</span>
-                {% endfor %}
-            </div>
+    .form-control:focus {
+        border-color: #00f0ff !important;
+        box-shadow: 0 0 10px rgba(0, 255, 255, 0.5) !important;
+    }
 
-            <div class="mb-3">
-                {{ form.description.label(class="form-label text-light") }}
-                {{ form.description(class="form-control bg-dark text-light border-secondary", rows=5) }}
-                {% for error in form.description.errors %}
-                    <span class="text-danger">{{ error }}</span>
-                {% endfor %}
-            </div>
+    .btn-glow {
+        position: relative;
+        overflow: hidden;
+        transition: all 0.3s ease;
+        border: 2px solid #00f0ff;
+        color: #00f0ff;
+        background: transparent;
+    }
 
-            <div class="mb-3">
-                {{ form.price.label(class="form-label text-light") }}
-                {{ form.price(class="form-control bg-dark text-light border-secondary") }}
-                {% for error in form.price.errors %}
-                    <span class="text-danger">{{ error }}</span>
-                {% endfor %}
-            </div>
+    .btn-glow:hover {
+        background: #00f0ff;
+        color: #1a1a3d;
+        box-shadow: 0 0 15px rgba(0, 240, 255, 0.7);
+        transform: scale(1.05);
+    }
 
-            <div class="mb-3">
-                {{ form.image.label(class="form-label text-light") }}
-                {{ form.image(class="form-control bg-dark text-light border-secondary") }}
-                {% for error in form.image.errors %}
-                    <span class="text-danger">{{ error }}</span>
-                {% endfor %}
-            </div>
+    .btn-glow::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+        transition: 0.5s;
+    }
 
-            <div class="d-flex justify-content-between mt-4">
-                {{ form.submit(class="btn btn-success") }}
-                <a href="{{ url_for('developer.dashboard') }}" class="btn btn-outline-secondary">Back</a>
-            </div>
-        </form>
-    </div>
+    .btn-glow:hover::before {
+        left: 100%;
+    }
+
+    .btn-success {
+        border-color: #00cc00;
+        color: #00cc00;
+    }
+
+    .btn-success:hover {
+        background: #00cc00;
+        color: #1a1a3d;
+        box-shadow: 0 0 15px rgba(0, 204, 0, 0.7);
+    }
+
+    h1, .form-label {
+        font-family: 'Orbitron', sans-serif;
+        text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+    }
+</style>
+
+<div class="container py-4">
+    <h1 class="mb-4 text-info">🎯 Add New Game</h1>
+
+    <form method="POST" action="" enctype="multipart/form-data" class="add-form p-4 rounded shadow-lg border text-light">
+        {{ form.hidden_tag() }}
+
+        <div class="mb-3">
+            {{ form.title.label(class="form-label") }}
+            {{ form.title(class="form-control") }}
+            {% for error in form.title.errors %}
+                <span class="text-danger">{{ error }}</span>
+            {% endfor %}
+        </div>
+
+        <div class="mb-3">
+            {{ form.description.label(class="form-label") }}
+            {{ form.description(class="form-control", rows=5) }}
+            {% for error in form.description.errors %}
+                <span class="text-danger">{{ error }}</span>
+            {% endfor %}
+        </div>
+
+        <div class="mb-3">
+            {{ form.price.label(class="form-label") }}
+            {{ form.price(class="form-control") }}
+            {% for error in form.price.errors %}
+                <span class="text-danger">{{ error }}</span>
+            {% endfor %}
+        </div>
+
+        <div class="mb-3">
+            {{ form.image.label(class="form-label") }}
+            {{ form.image(class="form-control") }}
+            {% for error in form.image.errors %}
+                <span class="text-danger">{{ error }}</span>
+            {% endfor %}
+        </div>
+
+        <div class="d-flex justify-content-between mt-4">
+            {{ form.submit(class="btn btn-glow btn-success") }}
+            <a href="{{ url_for('developer.dashboard') }}" class="btn btn-glow">Back</a>
+        </div>
+    </form>
+</div>
 {% endblock %}
